@@ -4,6 +4,15 @@
 
 using namespace std;
 
+void test_board_is_complete(const char inputFname[])
+{
+  char board[9][9];
+  load_board(inputFname, board);
+  cout << "Board is ";
+  if (!is_complete(board))
+    cout << "NOT ";
+  cout << "complete." << "\n\n";
+}
 
 /* Test placing functionality */
 void test_placement(const char position[2], const char digit, char board[9][9])
@@ -36,6 +45,7 @@ void test_save(const char inputFname[], const char outputFname[])
   cout << '\n';
 }
 
+
 /* Test solving functionality */
 void test_solve(const char inputFname[], bool count_recursion = false)
 {
@@ -51,6 +61,7 @@ void test_solve(const char inputFname[], bool count_recursion = false)
   cout << '\n';
 }
 
+
 int main() {
   int testNumber = 1;
   char board[9][9];
@@ -65,20 +76,10 @@ int main() {
   display_board(board);
   cout << "Done!" << "\n\n";
 
-
   cout << "=================== Question 1 ===================" << "\n\n";
 
-  load_board("easy.dat", board);
-  cout << "Board is ";
-  if (!is_complete(board))
-    cout << "NOT ";
-  cout << "complete." << "\n\n";
-
-  load_board("easy-solution.dat", board);
-  cout << "Board is ";
-  if (!is_complete(board))
-    cout << "NOT ";
-  cout << "complete." << "\n\n";
+  test_board_is_complete("easy.dat");
+  test_board_is_complete("easy-solution.dat");
 
   cout << "=================== Question 2 ===================" << "\n\n";
 

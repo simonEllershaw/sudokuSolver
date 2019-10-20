@@ -158,8 +158,8 @@ bool solve_board(char board[9][9], bool count_recursion = false)
   // Print out for recursion count
   if(count_recursion)
   {
-    cout << "It took " << num_recursive_calls << " recursions to solve this board"
-        << endl;
+    cout << "It took " << num_recursive_calls
+        << " recursions to solve this board" << endl;
   }
   return result;
 }

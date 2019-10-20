@@ -19,4 +19,4 @@ mystery3.dat:
   Number of recursions- 21541
   Difficulty- 'Hard'
 
-(For reference easy.dat took 2950 recursions and medium.dat 20317)
+(For reference easy.dat took 2950 recursions and medium.dat 20317 recursions)
