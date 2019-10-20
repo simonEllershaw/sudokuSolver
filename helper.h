@@ -24,10 +24,11 @@ char getBoardValue(const char char_position[2] , char board[9][9]);
 
 /* Recursive backtracking algorithm that retruns true if the current board
   state can be solved and false otherwises. If it can be solved the board
-  state is updated to the solution*/
-bool solve_board_helper(char board[9][9], char position[]);
+  state is updated to the solution
+*/
+bool solve_board_helper(char board[9][9], char position[], int& recursion_count);
 
 /* Returns true if next cell can be solved from current board state.
     False otherwise */
-bool can_solve_next_cell(char board[9][9], char row, char col);
+bool can_solve_next_cell(char board[9][9], char row, char col, int& recursion_count);
 #endif

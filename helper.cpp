@@ -101,8 +101,14 @@ char getBoardValue(const char char_position[2] , char board[9][9])
  * Algorithm inspired by following web page:
  * https://spin.atomicobject.com/2012/06/18/solving-sudoku-in-c-with-recursive-backtracking/
 */
-bool solve_board_helper(char board[9][9], char position[])
+bool solve_board_helper(char board[9][9], char position[], int& recursion_count)
 {
+  // Optional count of number of recusions
+  if(recursion_count)
+  {
+    recursion_count++;
+  }
+
   // Base case- The whole board has been iterated over and valid digit found
   // for each cell so return true
   if(position[0] == 'J')
@@ -111,16 +117,18 @@ bool solve_board_helper(char board[9][9], char position[])
   // If value already present it was given by input file so recurse onto next
   // cell straight away
   if(!(getBoardValue(position, board) == '.'))
-    return can_solve_next_cell(board, position[0], position[1]);
+    return can_solve_next_cell(board, position[0], position[1], recursion_count);
 
   // Recursive step- Attempt to place digit 1 to 9 in the cell. If the move can
   // be made and the next cell can be solved recursively then it is a solution.
   for(char test_digit = '1'; test_digit <= '9'; test_digit ++)
-    if(make_move(position, test_digit, board) && can_solve_next_cell(board, position[0], position[1]))
-      return true;
+    if(make_move(position, test_digit, board))
+      if(can_solve_next_cell(board, position[0], position[1], recursion_count))
+        return true;
 
   // If a digit cannot be placed in the cell with this board state backtracking
   // is required so reset cell value to '.' and return false.
+  // Base case if board has no solution- number of recursions not printed.
   updateBoard(position, '.', board);
   return false;
 }
@@ -128,7 +136,7 @@ bool solve_board_helper(char board[9][9], char position[])
 /* Returns true if next cell can be solved from current board state.
  * False otherwise
  */
-bool can_solve_next_cell(char board[9][9], char row, char col)
+bool can_solve_next_cell(char board[9][9], char row, char col, int& recursion_count)
 {
   // Select next cell
   // If in col 9 next cell is the start of next row
@@ -145,5 +153,5 @@ bool can_solve_next_cell(char board[9][9], char row, char col)
 
   // Attempt to solve board with updated position
   char updatedPosition[3] = {row, col, '\0'};
-  return solve_board_helper(board, updatedPosition);
+  return solve_board_helper(board, updatedPosition, recursion_count);
 }

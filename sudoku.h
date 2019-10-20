@@ -22,8 +22,10 @@ otherwise */
 bool save_board(const char filename[], const char board[9][9]);
 
 /*Returns true if board can be solved (with board updated to solved illustrates
-  and false otherwise (with the board in it's original state) */
-bool solve_board(char board[9][9]);
+  and false otherwise (with the board in it's original state)
+  count_recursion is an optional parameter to toggle on and off counting recurision
+  */
+bool solve_board(char board[9][9], bool count_recursion);
 
 
 #endif

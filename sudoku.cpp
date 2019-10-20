@@ -137,11 +137,29 @@ bool save_board(const char filename[], const char board[9][9])
 }
 
 
-/*Returns true if board can be solved (with board updated to solved illustrates
-  and false otherwise (with the board in it's original state) */
-bool solve_board(char board[9][9])
+/* Wrapper to begin recursive backtracking search
+ * Returns true if board can be solved (with board updated to solved illustrates
+ * and false otherwise (with the board in it's original state)
+ * count_recursion is an optional parameter to toggle on and off counting recurision
+*/
+bool solve_board(char board[9][9], bool count_recursion = false)
 {
-  // Wrapper to begin recursive backtracking search
+  // Set up for recursion count;
+  int num_recursive_calls;
+  if(count_recursion)
+    num_recursive_calls = 1;
+  else
+    num_recursive_calls = 0;
+
+  // Call to solve board starting at position A1
   char initial_position[] = "A1";
-  return solve_board_helper(board, initial_position);
+  bool result = solve_board_helper(board, initial_position, num_recursive_calls);
+
+  // Print out for recursion count
+  if(count_recursion)
+  {
+    cout << "It took " << num_recursive_calls << " recursions to solve this board"
+        << endl;
+  }
+  return result;
 }

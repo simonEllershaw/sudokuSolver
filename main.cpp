@@ -4,7 +4,8 @@
 
 using namespace std;
 
-// Test function for make_move(......)
+
+/* Test placing functionality */
 void test_placement(const char position[2], const char digit, char board[9][9])
 {
   bool move_valid = make_move(position, digit, board);
@@ -20,6 +21,34 @@ void test_placement(const char position[2], const char digit, char board[9][9])
     display_board(board);
   }
   cout << endl;
+}
+
+
+/* Test saving functionality */
+void test_save(const char inputFname[], const char outputFname[])
+{
+  char board[9][9];
+  load_board(inputFname, board);
+  if (save_board(outputFname, board))
+    cout << "Save board to " << outputFname << " successful." << '\n';
+  else
+    cout << "Save board failed." << '\n';
+  cout << '\n';
+}
+
+/* Test solving functionality */
+void test_solve(const char inputFname[], bool count_recursion = false)
+{
+  char board[9][9];
+  load_board(inputFname, board);
+  display_board(board);
+  if (solve_board(board, count_recursion)) {
+    cout << inputFname << " has a solution:" << '\n';
+    display_board(board);
+  }
+  else
+    cout << "A solution cannot be found." << '\n';
+  cout << '\n';
 }
 
 int main() {
@@ -77,41 +106,19 @@ int main() {
 
   cout << "=================== Question 3 ===================" << "\n\n";
 
-  load_board("easy.dat", board);
-  if (save_board("easy-copy.dat", board))
-    cout << "Save board to 'easy-copy.dat' successful." << '\n';
-  else
-    cout << "Save board failed." << '\n';
-  cout << '\n';
+  test_save("easy.dat" , "easy-copy.dat");
 
   cout << "=================== Question 4 ===================" << "\n\n";
 
-  load_board("easy.dat", board);
-  display_board(board);
-  if (solve_board(board)) {
-    cout << "The 'easy' board has a solution:" << '\n';
-    display_board(board);
-    save_board("easy-mysol.dat", board);
-  } else
-    cout << "A solution cannot be found." << '\n';
-  cout << '\n';
-
-  load_board("medium.dat", board);
-  display_board(board);
-  if (solve_board(board)) {
-    display_board(board);
-  } else
-    cout << "A solution cannot be found." << '\n';
-  cout << '\n';
-
-/*
-	// write more tests
+  test_solve("easy.dat");
+  test_solve("medium.dat");
 
   cout << "=================== Question 5 ===================" << "\n\n";
 
-	// write more tests
-*/
-  cout << "=================== Question 5 ===================" << "\n\n";
+  bool count_recursion = true;
+  test_solve("mystery1.dat", count_recursion);
+  test_solve("mystery2.dat", count_recursion);
+  test_solve("mystery3.dat", count_recursion);
 
 
   return 0;
