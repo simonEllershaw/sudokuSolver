@@ -58,8 +58,11 @@ int main() {
   cout << "Test " << testNumber++ << ": Pass" << endl;
   test_placement("I8", '1', board);
   /* Additional testing */
+
+  cout << "Test " << testNumber++ << ": Can overwrite a digit" << endl;
+  test_placement("I8", '3', board);
   cout << "Test " << testNumber++ << ": Repeated placement fails" << endl;
-  test_placement("I8", '1', board);
+  test_placement("I8", '3', board);
   cout << "Test " << testNumber++ << ": Row clash fails" << endl;
   test_placement("A2", '1', board);
   cout << "Test " << testNumber++ << ": Col clash fails" << endl;
@@ -68,8 +71,6 @@ int main() {
   test_placement("Q8", '1', board);
   cout << "Test " << testNumber++ << ": Col out of bounds fails" << endl;
   test_placement("A0", '1', board);
-  cout << "Test " << testNumber++ << ": Digit already in subsquare fails" << endl;
-  test_placement("A2", '2', board);
   cout << "Test " << testNumber++ << ": Double digit position fails" << endl;
   test_placement("A10", '9', board);
 
@@ -90,16 +91,18 @@ int main() {
   if (solve_board(board)) {
     cout << "The 'easy' board has a solution:" << '\n';
     display_board(board);
+    save_board("easy-mysol.dat", board);
   } else
     cout << "A solution cannot be found." << '\n';
   cout << '\n';
 
-  // load_board("medium.dat", board);
-  // if (solve_board(board)) {
-  //   display_board(board);
-  // } else
-  //   cout << "A solution cannot be found." << '\n';
-  // cout << '\n';
+  load_board("medium.dat", board);
+  display_board(board);
+  if (solve_board(board)) {
+    display_board(board);
+  } else
+    cout << "A solution cannot be found." << '\n';
+  cout << '\n';
 
 /*
 	// write more tests

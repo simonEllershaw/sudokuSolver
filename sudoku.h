@@ -1,3 +1,6 @@
+#ifndef SUDOKU_H
+#define SUDOKU_H
+
 /////////////////// Given functions /////////////////////////////////
 
 void load_board(const char* filename, char board[9][9]);
@@ -18,4 +21,9 @@ bool make_move(const char input_position[], const char digit, char board[9][9]);
 otherwise */
 bool save_board(const char filename[], const char board[9][9]);
 
-bool solve_board(char board[9][9], char row = 'A', char col = '1');
+/*Returns true if board can be solved (with board updated to solved illustrates
+  and false otherwise (with the board in it's original state) */
+bool solve_board(char board[9][9]);
+
+
+#endif

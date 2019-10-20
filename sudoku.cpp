@@ -4,8 +4,10 @@
 #include <cstring>
 #include <cassert>
 #include "sudoku.h"
+#include "helper.h"
 
 using namespace std;
+
 
 /* You are pre-supplied with the functions below. Add your own
    function definitions to the end of this file. */
@@ -70,6 +72,7 @@ void display_board(const char board[9][9]) {
 
 /* add your functions here */
 
+
 /* Takes a board and returns true if all positions are occupied by digits
 and false otherwise. Does not check if logically valid */
 bool is_complete(const char board[9][9])
@@ -85,104 +88,30 @@ bool is_complete(const char board[9][9])
 }
 
 
-/* Internal helper func- returns true if position is within bounds of the board
-  returns false otherwise */
-bool position_is_valid(const char position[])
-{
-  // Check row is valid
-  if(position[0] < 'A' || position[0] > 'I')
-    return false;
-  // Check column is valid
-  if(!isdigit(position[1]))
-    return false;
-  // Check position is 2 char long i.e. not A10
-  if(strlen(position) != 2)
-    return false;
-  return true;
-}
-
-
-/* Internal helper func- return true if digit already present in row
-    and false otherwise*/
-bool digit_in_row(const int row_index, const char digit, char board[9][9])
-{
-  for(int col = 0; col < 9; col++)
-    if(board[row_index][col] == digit){
-      return true;
-    }
-  return false;
-}
-
-
-/* Internal helper func- return ture if digit already present in col
-    and false otherwise*/
-bool digit_in_col(const int col_index, const char digit, char board[9][9])
-{
-  for(int row = 0; row < 9; row++)
-    if(board[row][col_index] == digit){
-      return true;
-    }
-  return false;
-}
-
-/* Internal helper func- return true if digit already present in subsquare
-    and false otherwise*/
-bool digit_in_subsquare(const int position[], const char digit, char board[9][9])
-{
-  int min_row, min_col;
-  // Calc the lowest indexed cell in the position's square (int div rounds down)
-  min_row = position[0] - (position[0] % 3);
-  min_col = position[1] - (position[1] % 3);
-
-  // Iterate over all cells in square checking non have value equal to digit
-  for(int row_count=0; row_count < 3; row_count++)
-    for(int col_count=0; col_count < 3; col_count++)
-      if(board[min_row + row_count][min_col + col_count] == digit)
-        return true;
-
-  // If not matches found return false
-  return false;
-}
-
-/* Internal helper func- updates board with a digit at a specified position*/
-void updateBoard(const int position[2], char digit, char board[9][9])
-{
-  board[position[0]][position[1]] = digit;
-}
-
-
 /* Function to place a digit at a specific position on the board. This occurs
 as long as the position and digit inputs are valid and don't break sudoku rules.
 Returns true with a successful placement and false otherwise */
-bool make_move(const char input_position[], const char digit, char board[9][9])
+bool make_move(const char char_position[], const char digit, char board[9][9])
 {
   // Check input is valid
-  if(!(position_is_valid(input_position) && isdigit(digit) && digit > '0'))
-  {
-    cout << "iterate: " << input_position << " " << digit << endl;
-    cout << position_is_valid(input_position) << endl;
-    cout << isdigit(digit) << endl;
-    cout << (digit > '0') << endl;
+  if(!(position_is_valid(char_position) && isdigit(digit) && digit > '0'))
     return false;
-  }
 
-  // Map position from char to int array equal to board indices
-  // Note mapping A->0 and 1->0
-  const int position[2] = {static_cast<int>(input_position[0])-static_cast<int>('A'),
-                  static_cast<int>(input_position[1]) - static_cast<int>('1')};
+  // Convert from char position to int indices
+  int index_position[2];
+  charPositionToArrayIndex(char_position, index_position);
 
   // Check for clashes with current board
-  if(digit_in_row(position[0], digit, board))
+  if(digit_in_row_or_col(index_position, digit, board))
     return false;
-  if(digit_in_col(position[1], digit, board))
-    return false;
-  if(digit_in_subsquare(position, digit, board))
+  if(digit_in_subsquare(index_position, digit, board))
     return false;
 
   // Place digit on the board
-  updateBoard(position, digit, board);
+  updateBoard(char_position, digit, board);
   return true;
 }
+
 
 /* Saves a board state to a given filename. Returns true if successful and false
 otherwise */
@@ -208,52 +137,11 @@ bool save_board(const char filename[], const char board[9][9])
 }
 
 
-// https://spin.atomicobject.com/2012/06/18/solving-sudoku-in-c-with-recursive-backtracking/
-
-char getBoardValue(char board[9][9], char row, char col)
+/*Returns true if board can be solved (with board updated to solved illustrates
+  and false otherwise (with the board in it's original state) */
+bool solve_board(char board[9][9])
 {
-  int row_converted = static_cast<int>(row)-static_cast<int>('A');
-  int col_converted = static_cast<int>(col) - static_cast<int>('1');
-  return board[row_converted][col_converted];
-}
-
-bool can_solve_next_cell(char board[9][9], char row, char col)
-{
-  if(col == '9')
-  {
-    if(solve_board(board, ++row, '1'))
-      return true;
-  }
-  else
-  {
-    if(solve_board(board, row, ++col))
-    {
-      cout << row << " " << col;
-      return true;
-    }
-  }
-  return false;
-}
-
-bool solve_board(char board[9][9], char row, char col)
-{
-  // Base case
-  display_board(board);
-  char position[3] = {row, col, '\0'};
-
-  if(row == 'J')
-    return true;
-
-  if(!(getBoardValue(board, row, col) == '.'))
-    return can_solve_next_cell(board, row, col);
-
-  cout << position << endl;
-  for(char test_digit = '1'; test_digit <= '9'; test_digit ++)
-    if(make_move(position, test_digit, board)){
-      cout << test_digit << endl;
-      if(can_solve_next_cell(board, row, col))
-        return true;
-    }
-
-  return false;
+  // Wrapper to begin recursive backtracking search
+  char initial_position[] = "A1";
+  return solve_board_helper(board, initial_position);
 }
