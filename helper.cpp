@@ -111,7 +111,7 @@ bool solve_board_helper(char board[9][9], char position[], int& recursion_count)
 
   // Base case- The whole board has been iterated over and valid digit found
   // for each cell so return true
-  if(position[0] == 'J')
+  if(is_complete(board))
     return true;
 
   // If value already present it was given by input file so recurse onto next

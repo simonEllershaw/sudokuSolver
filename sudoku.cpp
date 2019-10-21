@@ -28,7 +28,7 @@ void load_board(const char* filename, char board[9][9]) {
   in.getline(buffer,512);
   while (in && row < 9) {
     for (int n=0; n<9; n++) {
-      assert(buffer[n] == '.' || isdigit(buffer[n]));
+      assert(buffer[n] == '.' || (isdigit(buffer[n])));
       board[row][n] = buffer[n];
     }
     row++;
@@ -81,7 +81,7 @@ bool is_complete(const char board[9][9])
   for(int row = 0; row < 9; row ++)
     for(int col=0; col < 9; col ++)
         // If not a digit return false
-        if(!(isdigit(board[row][col])))
+        if(!(isdigit(board[row][col]) && board[row][col] > '0'))
           return false;
   // Else return true
   return true;
