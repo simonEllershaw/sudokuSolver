@@ -77,12 +77,12 @@ int main() {
   cout << "Done!" << "\n\n";
 
   cout << "=================== Question 1 ===================" << "\n\n";
-
+  //////////////////////// Testing board_is_complete //////////////////////////
   test_board_is_complete("easy.dat");
   test_board_is_complete("easy-solution.dat");
 
   cout << "=================== Question 2 ===================" << "\n\n";
-
+  ///////////////////////// Test placing of digits ////////////////////////////
   load_board("easy.dat", board);
 
   cout << "Test " << testNumber++ << ": Pass" << endl;
@@ -103,24 +103,28 @@ int main() {
   test_placement("A0", '1', board);
   cout << "Test " << testNumber++ << ": Double digit position fails" << endl;
   test_placement("A10", '9', board);
-
+  cout << "Test " << testNumber++ << ": Placing an int fails" << endl;
+  test_placement("A10", 1, board);
+  cout << "Test " << testNumber++ << ": Placing a letter fails" << endl;
+  test_placement("A10", 'a', board);
 
   cout << "=================== Question 3 ===================" << "\n\n";
-
+  //////////////////// Test saving file states ////////////////////////////////
   test_save("easy.dat" , "easy-copy.dat");
+  cout << "Test: Failed save is caught (cannot save to sudoku.exe)" << endl;
+  test_save("easy.dat" , "sudoku.exe");
 
   cout << "=================== Question 4 ===================" << "\n\n";
-
+  /////////////////////// Solve sample files //////////////////////////////////
   test_solve("easy.dat");
   test_solve("medium.dat");
 
   cout << "=================== Question 5 ===================" << "\n\n";
-
+  ////////////////// Solve sample files and count recursive steps /////////////
   bool count_recursion = true;
   test_solve("mystery1.dat", count_recursion);
   test_solve("mystery2.dat", count_recursion);
   test_solve("mystery3.dat", count_recursion);
-
 
   return 0;
 }
