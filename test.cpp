@@ -61,7 +61,7 @@ void test_solve(const char inputFname[], bool count_recursion = false)
   cout << '\n';
 }
 
-int main() {
+void run_tests(){
   int testNumber = 1;
   char board[9][9];
 
@@ -119,6 +119,4 @@ int main() {
   test_solve("mystery1.dat", count_recursion);
   test_solve("mystery2.dat", count_recursion);
   test_solve("mystery3.dat", count_recursion);
-
-  return 0;
 }

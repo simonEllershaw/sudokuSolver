@@ -3,8 +3,10 @@
 #include <cstdio>
 #include <cstring>
 #include <cassert>
+#include <cstdlib>
 #include "sudoku.h"
 #include "helper.h"
+#include "test.h"
 
 using namespace std;
 
@@ -161,4 +163,18 @@ bool solve_board(char board[9][9], bool count_recursion = false)
         << " recursions to solve this board" << endl;
   }
   return result;
+}
+
+int main(int argc, char* argv[]){
+  if(argc < 2){
+    cout << "No file or test command given";
+    exit(1);
+  }
+
+  if(!strcmp(argv[1], "test"))
+    run_tests();
+  else
+    test_solve(argv[1]);
+
+  return 0;
 }

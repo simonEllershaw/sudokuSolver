@@ -4,9 +4,9 @@ sudoku: sudoku.o helper.o test.o
 %.o: %.cpp
 	g++ -Wall -g -c $<
 
-test.o: sudoku.h
+test.o: sudoku.h test.h
 
-sudoku.o: sudoku.h helper.h
+sudoku.o: sudoku.h helper.h test.h
 
 helper.o: helper.h sudoku.h
 
